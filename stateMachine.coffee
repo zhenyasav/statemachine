@@ -5,6 +5,8 @@ class @State
 	constructor: (o) ->
 		_.extend @, o
 
+		@events = new EventEmitter()
+
 		if @response?.choices in ['yes/no', 'no/yes']
 			@response.choices =
 				Yes: 'yes'
@@ -24,7 +26,7 @@ class @State
 
 	shown: -> Meteor.user?()?.profile?.shown?[@id()]
 
-	rendered: ->
+	rendered: (templateInstance) ->
 		@before?()
 		
 		if u = Meteor?.userId?()
@@ -32,8 +34,14 @@ class @State
 			setter["profile.shown.#{@id()}"] = new Date()
 			Meteor?.users?.update? u, $set: setter 
 
-		if n = Number @dismiss
-			@dismissTimer = Utils.delay n * State.timeScale, => @next()
+		if typeof @dismiss is 'number'
+			@dismissTimer = Utils.delay @dismiss * State.timeScale, => @next()
+		else if typeof @dismiss is 'function'
+			@dismissComputation = templateInstance?.autorun? =>
+				@dismissComputation.stop()
+				@dismissComputation = null
+				if @dismiss() then @next()
+
 
 	dismissed: (response) ->
 
@@ -44,9 +52,10 @@ class @State
 
 	respond: (response) -> @next response
 
-	next: (r) -> 
-		@dismissed r
-		Visuals.next r
+	next: (response) -> 
+		@dismissed response
+		@events?.emit? 'next', response
+		
 
 	transition: 'fade slide'
 
@@ -103,6 +112,8 @@ class @StateMachine
 				s = new ctor s
 
 		s = new State s if s not instanceof State
+
+		s?.events?.on? 'next', (e) => @next e
 
 		names.map (name) =>
 			if name = name?.trim()
@@ -164,7 +175,8 @@ class @StateMachine
 		else
 			@stack.set stack
 
-Template.visualContent.rendered = -> @data?.rendered?()
+
+Template.visualContent.rendered = -> @data?.rendered? @
 
 
 # [

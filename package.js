@@ -22,6 +22,7 @@ Package.onUse(function(api) {
     'underscore',
     'reactive-var',
     'session',
+    'raix:eventemitter',
     'zhenya:boilerplate',
     'zhenya:reveal'], 'client');
 

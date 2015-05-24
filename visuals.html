@@ -1,0 +1,11 @@
+<template name="story">
+	<div class="story">
+		{{#reveal data=visual transition=visual.transition}}
+			{{>visualContent}}
+		{{/reveal}}
+	</div>
+</template>
+
+<template name="visualContent">
+	{{>Template.dynamic template=template}}
+</template>

@@ -20,6 +20,7 @@ Package.onUse(function(api) {
     'underscore',
     'reactive-var',
     'session',
+    'zhenya:boilerplate',
     'zhenya:reveal'], 'client');
 
   api.addFiles([
@@ -38,5 +39,5 @@ Package.onUse(function(api) {
 
 Package.onTest(function(api) {
   api.use('tinytest');
-  api.use('zhenya:convers8');
+  api.use('zhenya:story');
 });

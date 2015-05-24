@@ -117,10 +117,7 @@ Session.setDefault 'visuals-queue', []
 
 	current: ->
 		s = @stack.get()
-		if s?.length
-			s[s.length-1]
-		else
-			@map['default']?[0]
+		if s?.length then s[s.length-1] else @map['default']?[0]
 
 	push: (next) ->
 		if next
@@ -168,12 +165,11 @@ Session.setDefault 'visuals-queue', []
 		
 
 
-Template.visualContent.rendered = ->
-	@data?.rendered?()
+Template.visualContent.rendered = -> @data?.rendered?()
 
 Template.story.helpers
 	visual: -> Visuals.current()
-			
+
 
 # [
 # 	name: 'greeting'

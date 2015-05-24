@@ -1,0 +1,11 @@
+<template name="stateMachine">
+	<div class="state-machine">
+		{{#reveal data=current transition=current.transition}}
+			{{>visualContent}}
+		{{/reveal}}
+	</div>
+</template>
+
+<template name="visualContent">
+	{{>Template.dynamic template=template}}
+</template>

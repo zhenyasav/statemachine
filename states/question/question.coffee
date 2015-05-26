@@ -4,6 +4,8 @@ Template.question.helpers
 			_.sample @question
 		else if typeof @question is 'string'
 			@question
+		else if typeof @question is 'function'
+			@question()
 
 	responseTemplate: ->
 		if @response.number?

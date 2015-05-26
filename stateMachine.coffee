@@ -38,7 +38,7 @@ class @State
 			@dismissTimer = Utils.delay @dismiss * State.timeScale, => @next()
 		else if typeof @dismiss is 'function'
 			@dismissComputation = templateInstance?.autorun? =>
-				@dismissComputation.stop()
+				@dismissComputation?.stop?()
 				@dismissComputation = null
 				if @dismiss() then @next()
 
